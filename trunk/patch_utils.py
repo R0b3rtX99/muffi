@@ -37,3 +37,14 @@ class patch_utils():
     def __init__(self):
         
         self.imm            = Debugger()
+        
+        
+    def harness(self):
+        '''
+        Standard harness for testing new functionality
+        as we build it. This is kept in the final release
+        so that developers can test their patches before
+        we commit them.
+        '''
+        
+        self.imm.Log("[*] Patch utilities harness function called.")
