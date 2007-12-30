@@ -42,7 +42,7 @@ class anti_debug():
     
     def is_debugger_present(self):
         '''
-        Patches the instructions responsible for checking the PEB
+        Poly-patches the instructions responsible for checking the PEB
         to determine if a debugger is attached. However, it does 
         NOT modify the PEB itself.
         
@@ -51,7 +51,7 @@ class anti_debug():
         '''
         
         # Check whether the function is exported from kernel32.dll
-        function_present = self.imm.getAddress( "kernel32.IsDebuggerPresent" )
+        function_present = self.imm.getAddress("kernel32.IsDebuggerPresent")
         
         if (function_present <= 0):
             self.imm.Log("[*] No IsDebuggerPresent to patch ..")
@@ -63,17 +63,12 @@ class anti_debug():
         ret          = self.imm.Assemble("ret")
         
         # Create patch code
-        patch_code = patch_header + poly_eax_zero() + ret
+        patch_code = patch_header + patch_utils().poly_eax_zero() + ret
         
         # Write the patched instructions
         if self.imm.writeMemory(function_present, patch_code):
             return True
-        
-        
-    # Careful for Win2k ..
-    while len(Code) > 0x0E:
-      Code = imm.Assemble("DB 0x64\n Mov EAX, DWORD PTR DS:[0x18]") + Poly_Return0(imm) + imm.Assemble( "ret" )
-    imm.writeMemory( ispresent, Code )
+    
     
     def harness(self):
         '''
