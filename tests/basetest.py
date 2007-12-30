@@ -35,8 +35,18 @@ def test_poly_eax_zero(imm,mf):
     imm.Log("[Test] Output: %s" % instructions.encode("HEX"))
     instructions = mf.patch_utils.poly_eax_zero(flavor=4)
     imm.Log("[Test] Output: %s" % instructions.encode("HEX"))
+
+def test_is_debugger_present(imm, mf):
+    imm.Log("[Test] is_debugger_present:")
     
+    test = mf.anti_debug.is_debugger_present()
     
+    if test == True:
+        imm.Log("[Test] is_debugger_present returned true.")
+    else:
+        imm.Log("[Fail] is_debugger_present call failed.")
+        
+        
 def main(args):
     imm = Debugger()
     
@@ -51,5 +61,6 @@ def main(args):
     # Your test function should take imm, and mf instances for parameters
     test_poly_eax_dword(imm,mf)
     test_poly_eax_zero(imm,mf)
+    test_is_debugger_present(imm,mf)
     
     return "Muffi Test Completed"
