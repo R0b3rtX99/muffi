@@ -47,5 +47,5 @@ class anti_debug():
         we commit them.
         '''
         
-        self.imm.Log("Anti-Debug harness function called.")
+        self.imm.Log("[*] Anti-debug harness function called.")
         
