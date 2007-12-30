@@ -24,9 +24,11 @@ __all__ = \
 [
     "anti_debug",
     "muffi",
+    "muffi_defines",
     "patch_utils",
 ]
 
 from anti_debug              import *
 from muffi                   import *
+from muffi_defines           import *
 from patch_utils             import *
