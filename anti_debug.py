@@ -39,6 +39,42 @@ class anti_debug():
         
         self.imm            =    Debugger()
     
+    
+    def is_debugger_present(self):
+        '''
+        Patches the instructions responsible for checking the PEB
+        to determine if a debugger is attached. However, it does 
+        NOT modify the PEB itself.
+        
+        
+        @rtype          Bool
+        @return:        Returns True if the patch succeeded.
+        '''
+        # Check whether the function is exported from kernel32.dll
+        function_present = self.imm.getAddress( "kernel32.IsDebuggerPresent" )
+        
+        if (function_present <= 0):
+            self.imm.Log("[*] No IsDebuggerPresent to patch ..")
+            return True
+
+        self.imm.Log("[*] Patching kernel32.IsDebuggerPresent...",address = function_present)
+        
+        patch_header = self.imm.Assemble("DB 0x64\n Mov EAX, DWORD PTR DS:[0x18]")
+        ret          = self.imm.Assemble("ret")
+        
+        # Create patch code
+        patch_code = patch_header + poly_eax_zero() + ret
+        
+        # Write the patched instructions
+        if self.imm.writeMemory(function_present, patch_code):
+            return True
+        
+        
+    # Careful for Win2k ..
+    while len(Code) > 0x0E:
+      Code = imm.Assemble("DB 0x64\n Mov EAX, DWORD PTR DS:[0x18]") + Poly_Return0(imm) + imm.Assemble( "ret" )
+    imm.writeMemory( ispresent, Code )
+    
     def harness(self):
         '''
         Standard harness for testing new functionality
@@ -48,4 +84,5 @@ class anti_debug():
         '''
         
         self.imm.Log("[*] Anti-debug harness function called.")
+    
         
