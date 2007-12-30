@@ -66,7 +66,7 @@ class patch_utils():
         # Using a PUSH/POP routine for the patch.        
         # Size: 6 bytes
         if flavor == 1:
-            return self.imm.Assemble( "Push 0x%08x\n Pop EAX\n" % Value )
+            return self.imm.Assemble( "Push 0x%08x\n Pop EAX\n" % value )
 
         # Using SUB/ADD to create the patch.
         # Size: 7 bytes
@@ -137,3 +137,4 @@ class patch_utils():
         '''
         
         self.imm.Log("[*] Patch utilities harness function called.")
+                              
