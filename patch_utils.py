@@ -23,6 +23,7 @@ import struct
 import random
 import ctypes
 
+from mfx                   import *
 from muffi_defines         import *
 from patch_utils           import *
 from immlib                import *
