@@ -23,9 +23,10 @@ import struct
 import random
 import ctypes
 
-from anti_debug  import *
-from patch_utils import *
-from immlib      import *
+from anti_debug        import *
+from muffi_defines     import *
+from patch_utils       import *
+from immlib            import *
 
 class muffi():
     '''
