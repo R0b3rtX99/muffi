@@ -46,10 +46,10 @@ class anti_debug():
         to determine if a debugger is attached. However, it does 
         NOT modify the PEB itself.
         
-        
         @rtype          Bool
         @return:        Returns True if the patch succeeded.
         '''
+        
         # Check whether the function is exported from kernel32.dll
         function_present = self.imm.getAddress( "kernel32.IsDebuggerPresent" )
         
