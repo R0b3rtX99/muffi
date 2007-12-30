@@ -23,6 +23,8 @@
 __all__ = \
 [
     "anti_debug",
+    "patch_utils",
 ]
 
 from anti_debug              import *
+from patch_utils             import *
