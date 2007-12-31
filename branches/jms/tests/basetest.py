@@ -56,7 +56,17 @@ def test_patch_peb(imm,mf):
         imm.Log("[Test] PEB patch succeeded")
     else:
         imm.Log("[Fail] PEB patch failed.")
-        
+
+def test_check_remote_debugger_present(imm,mf):
+    
+    imm.Log("[Test] check_remote_debugger_present:")
+    
+    test = mf.anti_debug.check_remote_debugger_present()
+    
+    if test == True:
+        imm.Log("[Test] CheckRemoteDebuggerPresent patched successfully.")
+    else:
+        imm.Log("[Failed] CheckRemoteDebuggerPresent patch did not succeed.")      
         
 def main(args):
     imm = Debugger()
@@ -74,5 +84,6 @@ def main(args):
     test_poly_eax_zero(imm,mf)
     test_is_debugger_present(imm,mf)
     test_patch_peb(imm,mf)
+    test_check_remote_debugger_present(imm,mf)
     
     return "Muffi Test Completed"
