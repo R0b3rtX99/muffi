@@ -67,7 +67,18 @@ def test_check_remote_debugger_present(imm,mf):
         imm.Log("[Test] CheckRemoteDebuggerPresent patched successfully.")
     else:
         imm.Log("[Failed] CheckRemoteDebuggerPresent patch did not succeed.")      
-        
+
+def test_get_tick_count(imm,mf):
+    
+    imm.Log("[Test] get_tick_count:")
+    
+    test = mf.anti_debug.get_tick_count()
+    
+    if test == True:
+        imm.Log("[Test] GetTickCount patched successfully.")
+    else:
+        imm.Log("[Failed] GetTickCount patch did not succeed.")
+
 def main(args):
     imm = Debugger()
     
@@ -85,5 +96,6 @@ def main(args):
     test_is_debugger_present(imm,mf)
     test_patch_peb(imm,mf)
     test_check_remote_debugger_present(imm,mf)
+    test_get_tick_count(imm,mf)
     
     return "Muffi Test Completed"
