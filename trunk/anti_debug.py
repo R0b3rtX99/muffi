@@ -41,6 +41,43 @@ class anti_debug():
         self.imm            =    Debugger()
     
     
+    def check_remote_debugger_present(self):
+        '''
+        Patches the instructions in the beginning of the
+        CheckRemoteDebuggerPresent() function call.
+        
+        @raise mfx
+        @rtype Boolean
+        @return True if the patch to CheckRemoteDebuggerPresent() succeeds.
+        '''
+        func_address = self.imm.getAddress("kernel32.CheckRemoteDebuggerPresent")
+        
+        if (func_address <= 0):
+            raise mfx("[*] No CheckRemoteDebuggerPresent() function.")
+
+    
+        self.imm.Log("[*] Patching CheckRemoteDebuggerPresent.", address = func_address )
+        
+        # Patch instructions in to bypass the call
+        patch_code = self.imm.Assemble( " \
+            Mov   EDI, EDI                                    \n \
+            Push  EBP                                         \n \
+            Mov   EBP, ESP                                    \n \
+            Mov   EAX, [EBP + C]                              \n \
+            Push  0                                           \n \
+            Pop   [EAX]                                       \n \
+            Xor   EAX, EAX                                    \n \
+            Pop   EBP                                         \n \
+            Ret   8                                           \
+        " )
+        
+        bytes_written = self.imm.writeMemory(func_address,patch_code)
+        
+        if bytes_written == 0:
+            raise mfx("[*] Could not patch CheckRemoteDebuggerPresent()")
+        
+        return True
+
     def is_debugger_present(self):
         '''
         Poly-patches the instructions responsible for checking the PEB
