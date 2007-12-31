@@ -90,54 +90,47 @@ class anti_debug():
         '''
         try:
             peb_address = self.imm.getPEBaddress()
+            peb         = self.imm.getPEB()
         except:
             raise mfx("[*] Could not obtain PEB address.")
         
         # Patch the IsDebugged member
-        if peb_flag is None or peb_flag.lower() == "isdebugged":
+        if peb_flag is None or peb_flag.lower() == "beingdebugged":
             offset = peb_address + 0x02
-            self.imm.Log( "[*] Patching PEB.IsDebugged", address = offset )
+            self.imm.Log( "[*] Patching PEB.BeingDebugged", address = offset )
+            
             # Zero out the flag, BoB's original patch assembled a DB 0 into that position
-            self.imm.writeMemory(offset, "\x00" )
+            self.imm.writeMemory(offset, DWORD_ZERO)
         
         # Patch the ProcessHeap member
         if peb_flag is None or peb_flag.lower() == "processheap":
             offset = self.imm.readLong(peb_address + 0x18) + 0x10
             self.imm.Log("[*] Patching PEB.ProcessHeap", address = offset)
-            self.imm.writeLong(offset, "\x00")
+            self.imm.writeMemory(offset, DWORD_ZERO)
         
         # Patch the NtGlobalFlag member
         if peb_flag is None or peb_flag.lower() == "ntglobalflag":
             offset = peb_address + 0x68
             self.imm.Log("[*] Patching PEB.NtGlobalFlag", address = offset)
-            self.imm.writeLong(offset, "\x00")
+            self.imm.writeMemory(offset, DWORD_ZERO)
 
         # Patch the PEB_LDR_DATA struct by replaciong 0xFEEEFEEE
         # with zeros
         if peb_flag is None or peb_flag.lower() == "ldr_data":
-            offset = self.imm.readLong(peb_address + 0x0C)
-            imm.Log("[*] Patching PEB LDR_DATA", address = offset)
-        
-            # Now we are going to iterate over the LDR_DATA
-            # and replace any instances of 0xFEEEFEEE with zeros
-            fill_bytes = True
             
-            while fill_bytes == True:
-                offset += 1
-                
-                try:
-                    first_dword = self.imm.readLong(offset)
-                    second_dword= self.imm.readLong(offset + 0x4)
-                    
-                    if first_dword == LDR_DEBUG_FILL and second_dword == LDR_DEBUG_FILL:
-                        self.imm.writeLong(offset, "\x00")
-                        self.imm.writeLong(offset + 0x4, "\x00")
-                        
-                        offset += 7
-                
-                except:
-                    break
- 
+            # Grab the memory page where the LDR_DATA struct resides
+            # dump it to dirty_memory, and then replace all 0xFEEEFEEE
+            page         = self.imm.getMemoryPagebyAddress(peb.Ldr[0])
+            dirty_memory = page.getMemory()
+            clean_memory = dirty_memory.replace("\xEE\xFE\xEE\xFE","\x00\x00\x00\x00")
+    
+            bytes_written = self.imm.writeMemory(page.getBaseAddress(), clean_memory)
+            
+            if bytes_written == 0:
+                raise mfx("[*] Could not write the memory page to patch PEB.LDR_DATA.")
+            
+        return True
+    
     def harness(self):
         '''
         Standard harness for testing new functionality
