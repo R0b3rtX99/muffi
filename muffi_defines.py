@@ -23,5 +23,5 @@ from ctypes        import *
 
 
 GENERIC_PATCH_VALUE        =    0xB0B1560D    # When generically patching a DWORD use this value.
-LDR_DEBUG_FILL             =    0xFEEEFEEE    # When a ring3 debugger is attached, the LDR_DATA has a pile of 0xFEEEFEEE bytes
-
+LDR_DEBUG_FILL             =    "\xFE\xEE\xFE\xEE"    # When a ring3 debugger is attached, the LDR_DATA has a pile of 0xFEEEFEEE bytes
+DWORD_ZERO                 =    "\x00\x00\x00\x00"
