@@ -77,9 +77,9 @@ class anti_debug():
         PEB that you wish to patch.
         
         @type  flag:  STRING
-        @param flag:  (Optional) Specific flag you wish to patch. Values can be one of:
+        @param flag:  (Optional) Specific flag you wish to patch. Values can be one of (case IN-sensitive:
         
-                      IsDebugged
+                      BeingDebugged
                       ProcessHeap
                       NtGlobalFlag
                       LDR_DATA
@@ -114,7 +114,7 @@ class anti_debug():
             self.imm.Log("[*] Patching PEB.NtGlobalFlag", address = offset)
             self.imm.writeMemory(offset, DWORD_ZERO)
 
-        # Patch the PEB_LDR_DATA struct by replaciong 0xFEEEFEEE
+        # JMS: Patch the PEB_LDR_DATA struct by replaciong 0xFEEEFEEE
         # with zeros
         if peb_flag is None or peb_flag.lower() == "ldr_data":
             
