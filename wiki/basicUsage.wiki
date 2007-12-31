@@ -8,6 +8,7 @@ muffi is a framework for analyzing malware, bypassing anti-debugging techniques,
 == Requirements ==
 
 [http://debugger.immunityinc.com Immunity Debugger]
+
 Python 2.5 (installer is included with Immunity Debugger)
 
 == Installing muffi ==
@@ -52,8 +53,6 @@ Load the executable in Immunity Debugger, and from the command bar (located at t
 Then run the executable, it should report that no debugger was detected.
 
 Combining the power of immlib and muffi you are able to use any of the techniques from within hooks, or chain them together, or anything you choose! If you discover new techniques or wish to contribute to the project email Justin or BoB.
-
-
 
 
 
