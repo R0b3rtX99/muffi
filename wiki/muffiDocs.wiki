@@ -1,0 +1,11 @@
+#summary Documentation of all muffi classes.
+#labels Phase-Requirements,Documentation
+
+= Introduction =
+
+This is the supporting documentation for the muffi framework. 
+
+
+= Details =
+
+[http://muffi.googlecode.com/svn/trunk/muffi/docs/ Muffi Documentation]
