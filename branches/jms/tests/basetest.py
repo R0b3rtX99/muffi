@@ -46,6 +46,17 @@ def test_is_debugger_present(imm, mf):
     else:
         imm.Log("[Fail] is_debugger_present call failed.")
         
+def test_patch_peb(imm,mf):
+      
+    imm.Log("[Test] patch_peb:")
+    
+    test = mf.anti_debug.patch_peb()
+    
+    if test == True:
+        imm.Log("[Test] PEB patch succeeded")
+    else:
+        imm.Log("[Fail] PEB patch failed.")
+        
         
 def main(args):
     imm = Debugger()
@@ -62,5 +73,6 @@ def main(args):
     test_poly_eax_dword(imm,mf)
     test_poly_eax_zero(imm,mf)
     test_is_debugger_present(imm,mf)
+    test_patch_peb(imm,mf)
     
     return "Muffi Test Completed"
