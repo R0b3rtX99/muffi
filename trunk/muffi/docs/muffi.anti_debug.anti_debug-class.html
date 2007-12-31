@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>muffi.anti_debug.anti_debug</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://muffi.googlecode.com/">muffi</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Package&nbsp;muffi ::
+        <a href="muffi.anti_debug-module.html">Module&nbsp;anti_debug</a> ::
+        Class&nbsp;anti_debug
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="muffi.anti_debug.anti_debug-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class anti_debug</h1><span class="codelink"><a href="muffi.anti_debug-pysrc.html#anti_debug">source&nbsp;code</a></span><br /><br />
+This class encapsulates all anti-debugging tricks, you can call 
+  individual methods to apply a particular patch or you can use 
+  anti_debug.all() to apply all developed anti-debugging bypasses. Unless 
+  specifically stated otherwise, all of these tricks are by BoB from team 
+  PEid.<br /><br />
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__init__"></a><span class="summary-sig-name">__init__</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="muffi.anti_debug-pysrc.html#anti_debug.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">Boolean</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="muffi.anti_debug.anti_debug-class.html#check_remote_debugger_present" class="summary-sig-name">check_remote_debugger_present</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Patches the instructions in the beginning of the 
+      CheckRemoteDebuggerPresent() function call.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="muffi.anti_debug-pysrc.html#anti_debug.check_remote_debugger_present">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">Boolean</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="muffi.anti_debug.anti_debug-class.html#get_tick_count" class="summary-sig-name">get_tick_count</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Poly-patches the GetTickCount() function call, the reason it uses 
+      poly-patching is because it's too easy to check for XOR EAX,EAX or 
+      MOV EAX, 0xXXXXXXXX.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="muffi.anti_debug-pysrc.html#anti_debug.get_tick_count">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">Boolean</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="muffi.anti_debug.anti_debug-class.html#is_debugger_present" class="summary-sig-name">is_debugger_present</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Poly-patches the instructions responsible for checking the PEB to 
+      determine if a debugger is attached.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="muffi.anti_debug-pysrc.html#anti_debug.is_debugger_present">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">Boolean</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="muffi.anti_debug.anti_debug-class.html#patch_peb" class="summary-sig-name">patch_peb</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">peb_flag</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Various patches for the PEB.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="muffi.anti_debug-pysrc.html#anti_debug.patch_peb">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="muffi.anti_debug.anti_debug-class.html#harness" class="summary-sig-name">harness</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Standard harness for testing new functionality as we build it.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="muffi.anti_debug-pysrc.html#anti_debug.harness">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="check_remote_debugger_present"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">check_remote_debugger_present</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="muffi.anti_debug-pysrc.html#anti_debug.check_remote_debugger_present">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  Patches the instructions in the beginning of the 
+  CheckRemoteDebuggerPresent() function call.
+  <dl class="fields">
+    <dt>Returns: Boolean</dt>
+        <dd>True if the patch to CheckRemoteDebuggerPresent() 
+          succeeds.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_tick_count"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_tick_count</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="muffi.anti_debug-pysrc.html#anti_debug.get_tick_count">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  Poly-patches the GetTickCount() function call, the reason it uses 
+  poly-patching is because it's too easy to check for XOR EAX,EAX or MOV 
+  EAX, 0xXXXXXXXX.
+  <dl class="fields">
+    <dt>Returns: Boolean</dt>
+        <dd>True if function was patched successfully, False if it 
+          fails.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="is_debugger_present"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">is_debugger_present</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="muffi.anti_debug-pysrc.html#anti_debug.is_debugger_present">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  Poly-patches the instructions responsible for checking the PEB to 
+  determine if a debugger is attached. However, it does NOT modify the PEB 
+  itself.
+  <dl class="fields">
+    <dt>Returns: Boolean</dt>
+        <dd>Returns True if the patch succeeded.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="patch_peb"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">patch_peb</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">peb_flag</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="muffi.anti_debug-pysrc.html#anti_debug.patch_peb">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  Various patches for the PEB. Use the Flag variable to select 
+  particular fields in the PEB that you wish to patch.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>peb_flag</code></strong> (String) - (Optional) Specific flag you wish to patch. Values can be one 
+          of (case IN-sensitive):
+<pre class="literalblock">
+   BeingDebugged
+   ProcessHeap
+   NtGlobalFlag
+   LDR_DATA
+</pre></li>
+    </ul></dd>
+    <dt>Returns: Boolean</dt>
+        <dd>Returns True if the patch was successful.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="harness"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">harness</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="muffi.anti_debug-pysrc.html#anti_debug.harness">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  Standard harness for testing new functionality as we build it. This is
+  kept in the final release so that developers can test their patches 
+  before we commit them.
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://muffi.googlecode.com/">muffi</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0beta1 on Mon Dec 31 09:30:12 2007
+    </td>
+    <td align="right" class="footer">
+      <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie()
+  // -->
+</script>
+  
+</body>
+</html>
