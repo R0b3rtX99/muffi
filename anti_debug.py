@@ -42,18 +42,17 @@ class anti_debug():
     
     
     def check_remote_debugger_present(self):
-        '''
+        """
         Patches the instructions in the beginning of the
         CheckRemoteDebuggerPresent() function call.
         
-        @raise mfx
-        @rtype Boolean
-        @return True if the patch to CheckRemoteDebuggerPresent() succeeds.
-        '''
+        @rtype: Boolean
+        @return: True if the patch to CheckRemoteDebuggerPresent() succeeds.
+        """
         func_address = self.imm.getAddress("kernel32.CheckRemoteDebuggerPresent")
         
         if (func_address <= 0):
-            raise mfx("[*] No CheckRemoteDebuggerPresent() function.")
+            self.imm.Log("[*] No CheckRemoteDebuggerPresent() function.")
 
     
         self.imm.Log("[*] Patching CheckRemoteDebuggerPresent.", address = func_address )
@@ -77,16 +76,48 @@ class anti_debug():
             raise mfx("[*] Could not patch CheckRemoteDebuggerPresent()")
         
         return True
-
+    
+    def get_tick_count(self):
+        """
+        Poly-patches the GetTickCount() function call, the reason it
+        uses poly-patching is because it's too easy to check for 
+        XOR EAX,EAX or MOV EAX, 0xXXXXXXXX.
+        
+        @rtype:    Boolean
+        @return:   True if function was patched successfully, False if it fails.
+        """
+        func_address = self.imm.getAddress("kernel32.GetTickCount")
+        
+        if func_address <= 0:
+            return False
+        
+        self.imm.Log("[*] Patching GetTickCount().")
+        
+        # We keep the first instruction to avoid integrity checks
+        patch_header = self.imm.Assemble("MOV EDX, 0x7FFE0000")
+        patch_body   = patch_utils().poly_eax_dword()
+        patch_ret    = self.imm.Assemble("Ret")
+        
+        patch_code   = patch_header + patch_body + patch_ret
+        
+        # Patch the function call
+        bytes_written = self.imm.writeMemory(func_address, patch_code)
+            
+        if bytes_written != len(patch_code):
+            return False
+        
+        return True
+            
+    
     def is_debugger_present(self):
-        '''
+        """
         Poly-patches the instructions responsible for checking the PEB
         to determine if a debugger is attached. However, it does 
         NOT modify the PEB itself.
         
-        @rtype          Bool
+        @rtype:         Boolean
         @return:        Returns True if the patch succeeded.
-        '''
+        """
         
         # Check whether the function is exported from kernel32.dll
         function_present = self.imm.getAddress("kernel32.IsDebuggerPresent")
@@ -108,23 +139,25 @@ class anti_debug():
             return True
     
     def patch_peb(self, peb_flag = None):
-        '''
+        """
         Various patches for the PEB. Use the Flag
         variable to select particular fields in the 
         PEB that you wish to patch.
         
-        @type  flag:  STRING
-        @param flag:  (Optional) Specific flag you wish to patch. Values can be one of (case IN-sensitive:
+        @type  peb_flag:  String
+        @param peb_flag:  (Optional) Specific flag you wish to patch. 
+        Values can be one of (case IN-sensitive)::
         
-                      BeingDebugged
-                      ProcessHeap
-                      NtGlobalFlag
-                      LDR_DATA
+        
+            BeingDebugged
+            ProcessHeap
+            NtGlobalFlag
+            LDR_DATA
         
           
-        @rtype BOOLEAN
-        @return    Returns True if the patch was successful.
-        '''
+        @rtype: Boolean
+        @return:    Returns True if the patch was successful.
+        """
         try:
             peb_address = self.imm.getPEBaddress()
             peb         = self.imm.getPEB()
