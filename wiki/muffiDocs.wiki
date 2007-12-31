@@ -8,4 +8,4 @@ This is the supporting documentation for the muffi framework.
 
 = Details =
 
-[http://www.bughunter.ca/muffidocs/ Muffi Documentation]
+[http://www.bughunter.ca/muffidocs/ Muffi Documentation] (External Link)
