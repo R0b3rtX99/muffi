@@ -1,5 +1,9 @@
 muffi.anti_debug	muffi.anti_debug-module.html
 muffi.muffi	muffi.muffi-module.html
+muffi.muffi_defines	muffi.muffi_defines-module.html
+muffi.muffi_defines.GENERIC_PATCH_VALUE	muffi.muffi_defines-module.html#GENERIC_PATCH_VALUE
+muffi.muffi_defines.DWORD_ZERO	muffi.muffi_defines-module.html#DWORD_ZERO
+muffi.muffi_defines.LDR_DEBUG_FILL	muffi.muffi_defines-module.html#LDR_DEBUG_FILL
 muffi.patch_utils	muffi.patch_utils-module.html
 muffi.anti_debug.anti_debug	muffi.anti_debug.anti_debug-class.html
 muffi.anti_debug.anti_debug.harness	muffi.anti_debug.anti_debug-class.html#harness
