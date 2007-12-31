@@ -30,11 +30,11 @@ from immlib                import *
 
 
 class patch_utils():
-    '''
+    """
     This high-level class exposes methods for various 
     patching and poly-patching routines. Unless specifically 
     stated otherwise, most of this is BoB's work.
-    '''
+    """
     
     def __init__(self):
         
@@ -42,7 +42,7 @@ class patch_utils():
     
         
     def poly_eax_dword(self, value=GENERIC_PATCH_VALUE, flavor=0):
-        '''
+        """
         This function will create a polymorphic set of instructions
         to write out the opcode bytes that will set EAX to a DWORD
         value. The flavor parameter is important, the smaller the
@@ -56,7 +56,7 @@ class patch_utils():
         @raise mfx: An exception is raised on failure.
         
         @return:        Returns the instructions for poly-patching EAX.
-        '''       
+        """       
         
         # If the flavor was untouched, then randomize the patch
         if flavor == 0:
