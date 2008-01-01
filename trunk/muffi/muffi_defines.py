@@ -21,7 +21,24 @@
 '''
 from ctypes        import *
 
-
-GENERIC_PATCH_VALUE        =    0xB0B1560D    # When generically patching a DWORD use this value.
-LDR_DEBUG_FILL             =    "\xFE\xEE\xFE\xEE"    # When a ring3 debugger is attached, the LDR_DATA has a pile of 0xFEEEFEEE bytes
+"""
+General Purpose Constants
+"""
 DWORD_ZERO                 =    "\x00\x00\x00\x00"
+
+
+"""
+Anti-Debug Constants
+"""
+GENERIC_PATCH_VALUE        =    0xB0B1560D            # When generically patching a DWORD use this value.
+LDR_DEBUG_FILL             =    "\xFE\xEE\xFE\xEE"    # When a ring3 debugger is attached, the LDR_DATA has a pile of 0xFEEEFEEE bytes
+
+"""
+Virtual Machine Detection Constants
+"""
+WINXP_2003_IDT             =    0x8003F400    # Native IDT in Win XP/2003
+WINXP_2003_LDT             =    0xDEAD0000    # Native LDT in Win XP/2003
+WINXP_2003_GDT             =    0x8003F000    # Native GDT in Win XP/2003
+WIN2000_IDT                =    0x80036400    # Native IDT in Windows 2000
+WIN2000_LDT                =    0xDEAD0000    # Native LDT in Windows 2000
+WIN2000_GDT                =    0x80036000    # Native GDT in Windows 2000
