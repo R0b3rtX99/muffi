@@ -51,4 +51,4 @@ class vm_detect():
         @rtype: Boolean
         @return: Returns True if the patches were applied correctly.
         """
-        
+        pass
