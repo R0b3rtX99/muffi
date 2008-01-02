@@ -20,12 +20,13 @@
 @contact:      jms@bughunter.ca, bobsoft@gmail.com
 '''
 from ctypes        import *
+from immlib        import *
 
 """
 General Purpose Constants
 """
 DWORD_ZERO                 =    "\x00\x00\x00\x00"
-
+FUNCTION_RETURN            =    "\xc3"
 
 """
 Anti-Debug Constants
