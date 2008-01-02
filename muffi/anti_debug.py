@@ -32,8 +32,6 @@ class anti_debug():
     This class encapsulates all anti-debugging tricks, you can call
     individual methods to apply a particular patch or you can use 
     anti_debug.all() to apply all developed anti-debugging bypasses.
-    Unless specifically stated otherwise, all of these tricks are by BoB 
-    from team PEid.
     '''
     
     def __init__(self):
@@ -96,9 +94,8 @@ class anti_debug():
         # We keep the first instruction to avoid integrity checks
         patch_header = self.imm.Assemble("MOV EDX, 0x7FFE0000")
         patch_body   = patch_utils().poly_eax_dword()
-        patch_ret    = self.imm.Assemble("Ret")
-        
-        patch_code   = patch_header + patch_body + patch_ret
+                
+        patch_code   = patch_header + patch_body + FUNCTION_RETURN
         
         # Patch the function call
         bytes_written = self.imm.writeMemory(func_address, patch_code)
@@ -129,10 +126,9 @@ class anti_debug():
         self.imm.Log("[*] Patching kernel32.IsDebuggerPresent...",address = function_present)
         
         patch_header = self.imm.Assemble("DB 0x64\n Mov EAX, DWORD PTR DS:[0x18]")
-        ret          = self.imm.Assemble("ret")
-        
+                
         # Create patch code
-        patch_code = patch_header + patch_utils().poly_eax_zero() + ret
+        patch_code = patch_header + patch_utils().poly_eax_zero() + FUNCTION_RETURN
         
         # Write the patched instructions
         if self.imm.writeMemory(function_present, patch_code):
@@ -200,6 +196,40 @@ class anti_debug():
                 raise mfx("[*] Could not write the memory page to patch PEB.LDR_DATA.")
             
         return True
+    
+    def process32_first_next(self):
+        """
+        This patch prevents a packer or malware sample from
+        iterating all of the running processes on the system. 
+        This disables checks where they are iterating through all running
+        processes doing checks for debuggers or for determining the parent
+        process which spawned their executable. This will patch: 
+        kernel32.Process32FirstW and kernel32.Process32NextW
+        
+        @rtype:     Boolean
+        @return:    Returns True if the patch was successful, False if it failed.
+        """
+        function_addresses = []
+        
+        # Build the list of function addresses to patch
+        function_addresses.append(self.imm.getAddress("kernel32.Process32FirstW"))
+        function_addresses.append(self.imm.getAddress("kernel32.Process32NextW"))
+                        
+        # TODO: Preserve the first instructions to evade integrity checks
+        for address in function_addresses:
+            if address != 0:
+                
+                # Generate the poly-patch to zero out EAX
+                patch_code = patch_utils().poly_eax_zero() + FUNCTION_RETURN
+                
+                # Write the patch to the function header
+                bytes_written = self.imm.writeMemory(address, patch_code)
+                
+                if bytes_written != len(patch_code):
+                    return False
+        
+        return True
+                
     
     def harness(self):
         '''
