@@ -64,20 +64,24 @@ class vm_detect():
         @rtype: Boolean
         @return: Returns True if the patches were applied correctly.
         
-        @see: dt_search()
+        @see: dt_search(), dt_hooks()
         """
-        if os.lower() not in ("WindowsXP".lower(),"Windows2000".lower(),"Windows2003".lower()) and os.lower() != None:
+        
+        if self.os is None:
+            self.os    =    "WindowsXP"
+        elif os.lower() not in ("WindowsXP".lower(),"Windows2000".lower(),"Windows2003".lower()) and os.lower() != None:
             raise mfx("The operating system must be one of WindowsXP or Windows2000")
         else:
-            if self.os is None:
-                self.os    =    "WindowsXP"
-            else:
-                self.os    =    os
-                
+            self.os    =    os
+        
+    
         # First find any SIDT, SGDT and SLDT instructions
         # and hook them so that we can modify the return value
-        dt_matches = self.dt_search()
+        self.dt_search()
     
+        # Now let's build some hooks 
+        dt_hooker = dt_hooks(self.hook_addrs,self.os)
+        
     def dt_search(self):
         """
         This is a helper function for cloaking VMWare. It locates
@@ -95,15 +99,24 @@ class vm_detect():
         
         # Determine the register we want at hook-time
         for address in self.sidt_list:
-            opcode        = self.disasm(address)
-            hook_register = opcode.getDisasm().split("[")[1].replace("]") 
+            opcode        = self.imm.disasm(address)
+            hook_register = opcode.getDisasm().split("[")[1].replace("]","") 
             self.hook_addrs[address] = (hook_register)
         
-        # Now let's build some hooks 
-        dt_hooker = dt_hooks(self.hook_addrs,self.os)
+        for address in self.sgdt_list:
+            opcode        = self.imm.disasm(address)
+            hook_register = opcode.getDisasm().split("[")[1].replace("]","") 
+            self.hook_addrs[address] = (hook_register)
+        
+        for address in self.sldt_list:
+            opcode        = self.imm.disasm(address)
+            hook_register = opcode.getDisasm().split("[")[1].replace("]","") 
+            self.hook_addrs[address] = (hook_register)
         
         
- 
+        return True
+
+
 class dt_hooks(LogBpHook):
     """
     This is a helper class that is responsible for
@@ -120,14 +133,25 @@ class dt_hooks(LogBpHook):
         self.imm            =    Debugger()
         self.hook_addrs     =    hook_addrs
         self.os             =    os
-           
+       
+        # Iterate through all of the addresses, and set hookss
+        for address in self.hook_addrs:
+            self.imm.Log("Hook: %08x" % address)
+            self.add("%08x" % address,address)
+            self.imm.addKnowledge("%08x" % address,"%08x|%s" % (address,self.hook_addrs[address]))
+            
+        
     def run(self,regs):
         """
         This is run when the hook gets hit. It is responsible
-        for writing out the constant that will hopefully trick
+        for writing out the constant that will trick
         the process into thinking it's running on a host and 
         not a guest.
         """
         
+        # We need to figure out where the instruction
+        # is pointing
+        register = self.imm.getKnowledge("%08x" % regs['EIP'])
+        self.imm.Log("This pile is here",address = regs['EIP'])
         
-        
+        return True
