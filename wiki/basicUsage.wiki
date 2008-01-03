@@ -15,7 +15,7 @@ Python 2.5 (installer is included with Immunity Debugger)
 
 The best option is to obtain the muffi framework from the SVN repository. When we have a stable release, it will be tagged in SVN and added to the Downloads page. Until then, grab the SVN trunk\muffi directory.
 
-Once you have obtained the muffi directory, drop it in the PyCommands folder in %ImmunityDebuggerInstallPath%\\PyCommands
+Once you have obtained the muffi directory, drop it in the PyCommands folder in %ImmunityDebuggerInstallPath%\PyCommands
 
 == Using muffi ==
 
