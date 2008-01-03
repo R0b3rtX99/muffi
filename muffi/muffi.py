@@ -24,10 +24,11 @@ import random
 import ctypes
 
 from anti_debug        import *
+from immlib            import *
 from mfx               import *
 from muffi_defines     import *
 from patch_utils       import *
-from immlib            import *
+from vm_detect         import *
 
 class muffi():
     '''
@@ -40,4 +41,4 @@ class muffi():
         
         self.anti_debug            =    anti_debug()
         self.patch_utils           =    patch_utils()
-        
+        self.vm_detect             =    vm_detect()
