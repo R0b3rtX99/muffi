@@ -20,7 +20,6 @@
 @contact:      jms@bughunter.ca, bobsoft@gmail.com
 '''
 from ctypes        import *
-from immlib        import *
 
 """
 General Purpose Constants
