@@ -37,6 +37,9 @@ LDR_DEBUG_FILL             =    "\xFE\xEE\xFE\xEE"    # When a ring3 debugger is
 """
 Virtual Machine Detection Constants
 """
+SIDT_OPCODE                =    "\x0f\x01\x4c"
+SGDT_OPCODE                =    "\x0f\x01\x44"
+SLDT_OPCODE                =    "\x0f\x00\x44"
 WINXP_2003_IDT             =    0x8003F400    # Native IDT in Win XP/2003
 WINXP_2003_LDT             =    0xDEAD0000    # Native LDT in Win XP/2003
 WINXP_2003_GDT             =    0x8003F000    # Native GDT in Win XP/2003
