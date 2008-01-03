@@ -38,10 +38,11 @@ class vm_detect():
     def __init__(self):
         
         self.imm        =    Debugger()
+        self.os         =    None          # Operating system to spoof to the executable
         self.sidt_list  =    []            # List of SIDT instruction addresses
         self.sldt_list  =    []            # List of SLDT instruction addresses
         self.sgdt_list  =    []            # List of SGDT instruction addresses
-        self.os         =    None          # Operating system to spoof to the executable
+        self.hook_addrs =    {}            # Dictionary of hook locations for descriptor tables
         
     def cloak_vmware(self,os=None):
         """
@@ -53,9 +54,10 @@ class vm_detect():
         
         @type: os    String
         @param os    (Optional)The operating system you wish to spoof, 
-        defaults to randomly picking one. The options are::
+        defaults to WindowsXP. The options are::
         
             WindowsXP
+            Windows2003
             Windows2000
         
         @raise: mfx An exception is raised if the cloaking fails.
@@ -64,11 +66,14 @@ class vm_detect():
         
         @see: dt_search()
         """
-        if os.lower() not in ("WindowsXP".lower(),"Windows2000".lower()):
+        if os.lower() not in ("WindowsXP".lower(),"Windows2000".lower(),"Windows2003".lower()) and os.lower() != None:
             raise mfx("The operating system must be one of WindowsXP or Windows2000")
         else:
-            self.os    =    os
-        
+            if self.os is None:
+                self.os    =    "WindowsXP"
+            else:
+                self.os    =    os
+                
         # First find any SIDT, SGDT and SLDT instructions
         # and hook them so that we can modify the return value
         dt_matches = self.dt_search()
@@ -88,11 +93,16 @@ class vm_detect():
         self.sgdt_list = self.imm.Search(SGDT_OPCODE)
         self.sldt_list = self.imm.Search(SLDT_OPCODE)
         
+        # Determine the register we want at hook-time
+        for address in self.sidt_list:
+            opcode        = self.disasm(address)
+            hook_register = opcode.getDisasm().split("[")[1].replace("]") 
+            self.hook_addrs[address] = (hook_register)
         
         # Now let's build some hooks 
-        dt_hooker = dt_hooks()
-    
-    
+        dt_hooker = dt_hooks(self.hook_addrs,self.os)
+        
+        
  
 class dt_hooks(LogBpHook):
     """
@@ -101,20 +111,23 @@ class dt_hooks(LogBpHook):
     for storing descriptor table addresses.
     """
     
-    def __init__(self,hook_register,operating_system):
+    def __init__(self,hook_addrs,os):
         """
         This just sets up the hook itself, and initializes 
         a debugger instance.
-        
-        @type:  hook_register String
-        @param: hook_register The register that we need to modify with our own table entry.
-        
-        """
+        """        
         LogBpHook.__init__(self)
-        self.imm        =    Debugger()
-    
+        self.imm            =    Debugger()
+        self.hook_addrs     =    hook_addrs
+        self.os             =    os
+           
     def run(self,regs):
         """
         This is run when the hook gets hit. It is responsible
-        for writing a 
+        for writing out the constant that will hopefully trick
+        the process into thinking it's running on a host and 
+        not a guest.
+        """
+        
+        
         
