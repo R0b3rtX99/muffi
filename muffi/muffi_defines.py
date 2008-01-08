@@ -26,6 +26,8 @@ General Purpose Constants
 """
 DWORD_ZERO                 =    "\x00\x00\x00\x00"
 FUNCTION_RETURN            =    "\xc3"
+MEM_TYPE_WORD              =    0x2
+MEM_TYPE_DWORD             =    0x4
 
 """
 Anti-Debug Constants
@@ -36,12 +38,12 @@ LDR_DEBUG_FILL             =    "\xFE\xEE\xFE\xEE"    # When a ring3 debugger is
 """
 Virtual Machine Detection Constants
 """
-SIDT_OPCODE                =    "\x0f\x01\x4c"
-SGDT_OPCODE                =    "\x0f\x01\x44"
-SLDT_OPCODE                =    "\x0f\x00\x44"
-WINXP_2003_IDT             =    0x8003F400    # Native IDT in Win XP/2003
-WINXP_2003_LDT             =    0xDEAD0000    # Native LDT in Win XP/2003
-WINXP_2003_GDT             =    0x8003F000    # Native GDT in Win XP/2003
-WIN2000_IDT                =    0x80036400    # Native IDT in Windows 2000
-WIN2000_LDT                =    0xDEAD0000    # Native LDT in Windows 2000
-WIN2000_GDT                =    0x80036000    # Native GDT in Windows 2000
+SIDT_OPCODE                =    "\x0f\x01"
+SGDT_OPCODE                =    "\x0f\x01"
+SLDT_OPCODE                =    "\x0f\x00"
+WINXP_2003_IDT             =    0x00408003    # Native IDT in Win XP/2003 0x8003F400
+WINXP_2003_LDT             =    0xDEAD0000    # Native LDT in Win XP/2003 0xDEAD0000
+WINXP_2003_GDT             =    0x8003F000    # Native GDT in Win XP/2003 0x8003F000
+WIN2000_IDT                =    0x80036400    # Native IDT in Windows 2000 0x80036400
+WIN2000_LDT                =    0xDEAD0000    # Native LDT in Windows 2000 0xDEAD0000
+WIN2000_GDT                =    0x80036000    # Native GDT in Windows 2000 0x80036000
