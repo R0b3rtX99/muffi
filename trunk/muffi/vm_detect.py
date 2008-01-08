@@ -172,8 +172,7 @@ class vm_detect():
                 patch_value = gdt
             elif self.hook_addrs[address][0] == "ldt":
                 patch_value = ldt
-            
-                        
+                      
             # First we need to determine the length of the original
             # opcode, if the length is greater than 5 bytes, we need to 
             # preserve the instruction that follows it, the reason is
@@ -203,11 +202,9 @@ class vm_detect():
             operand = opcode.getDisasm()[5:]
             register = operand.split("[")[1].split("]")[0]
             
-            if opcode.getMemType() == MEM_TYPE_WORD and patch_value == ldt:
-                patch_header = "MOV WORD PTR [%s],0x0000 \n" % register
-            else:
-                patch_header = "MOV DWORD PTR [%s],0x%08x \n" % (register,patch_value)
-            
+            # We need to put a WORD ptr check in here, but 
+            # for now just assemble as a DWORD manipulation
+            patch_header = "MOV DWORD PTR [%s],0x%08x \n" % (register,patch_value)
             
             # Now if we need to preserve some instructions from the original
             # basic block (because we clobbered them with our detour JMP)
@@ -226,12 +223,14 @@ class vm_detect():
                 detour_ret = address + detour_jmp_len
                 
             self.imm.Log("Detour Return: 0x%08x" % detour_ret)
-            ret_jmp = "JMP 0x%08x \n" % detour_ret
             
-            
+            # We are going to use a PUSH/RET sequence to get
+            # back from our detour page
+            jmp_label = "%08x" % detour_ret
+            ret_jmp = "PUSH %s\n RET" % jmp_label
             
             # Assemble the final patch
-            final_patch = self.imm.Assemble(patch_header + patch_body + ret_jmp, address = stub_address)
+            final_patch = self.imm.Assemble(patch_header + patch_body + ret_jmp,address = stub_address)
             self.imm.Log("Final Patch: %s" % final_patch.encode("HEX"))
             self.imm.writeMemory(stub_address,final_patch)
           
