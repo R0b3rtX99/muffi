@@ -79,6 +79,25 @@ def test_get_tick_count(imm,mf):
     else:
         imm.Log("[Failed] GetTickCount patch did not succeed.")
 
+def test_process32_patch(imm,mf):
+    
+    imm.Log("[Test] process32_patch:")
+    
+    test = mf.anti_debug.process32_first_next()
+    
+    if test == True:
+        imm.Log("[Test] Process32* functions patched successfully.")
+    else:
+        imm.Log("[Fail] Couldn't patch the Process32* functions.")
+
+def test_cloak_vmware(imm,mf):
+    
+    imm.Log("[Test] cloak_vmware:")
+    
+    test = mf.vm_detect.cloak_vmware()
+    
+    
+
 def main(args):
     imm = Debugger()
     
@@ -97,5 +116,7 @@ def main(args):
     test_patch_peb(imm,mf)
     test_check_remote_debugger_present(imm,mf)
     test_get_tick_count(imm,mf)
+    test_process32_patch(imm,mf)
+    test_cloak_vmware(imm,mf)
     
     return "Muffi Test Completed"
