@@ -19,5 +19,10 @@
 @license:      GNU General Public License 2.0 or later
 @contact:      jms@bughunter.ca, bobsoft@gmail.com
 '''
+import struct
+import random
+import ctypes
 
-    
+from mfx         import *
+from patch_utils import *
+from immlib      import *
