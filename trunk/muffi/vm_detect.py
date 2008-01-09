@@ -64,7 +64,7 @@ class vm_detect():
         @rtype: Boolean
         @return: Returns True if the patches were applied correctly.
         
-        @see: dt_search(), dt_hooks()
+        @see: dt_search(), dt_patch()
         """
         
         if self.os is None:
