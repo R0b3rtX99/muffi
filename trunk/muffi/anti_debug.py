@@ -37,7 +37,7 @@ class anti_debug():
     def __init__(self):
         
         self.imm            =    Debugger()
-    
+        self.patch_utils    =    patch_utils()
     
     def check_remote_debugger_present(self):
         """
@@ -93,7 +93,7 @@ class anti_debug():
         
         # We keep the first instruction to avoid integrity checks
         patch_header = self.imm.Assemble("MOV EDX, 0x7FFE0000")
-        patch_body   = patch_utils().poly_eax_dword()
+        patch_body   = self.patch_utils.poly_eax_dword()
                 
         patch_code   = patch_header + patch_body + FUNCTION_RETURN
         
@@ -117,21 +117,21 @@ class anti_debug():
         """
         
         # Check whether the function is exported from kernel32.dll
-        function_present = self.imm.getAddress("kernel32.IsDebuggerPresent")
+        function_address = self.imm.getAddress("kernel32.IsDebuggerPresent")
         
-        if (function_present <= 0):
+        if (function_address <= 0):
             self.imm.Log("[*] No IsDebuggerPresent to patch ..")
             return True
 
-        self.imm.Log("[*] Patching kernel32.IsDebuggerPresent...",address = function_present)
+        self.imm.Log("[*] Patching kernel32.IsDebuggerPresent...",address = function_address)
         
         patch_header = self.imm.Assemble("DB 0x64\n Mov EAX, DWORD PTR DS:[0x18]")
                 
         # Create patch code
-        patch_code = patch_header + patch_utils().poly_eax_zero() + FUNCTION_RETURN
+        patch_code = patch_header + self.patch_utils.poly_eax_zero() + FUNCTION_RETURN
         
         # Write the patched instructions
-        if self.imm.writeMemory(function_present, patch_code):
+        if self.imm.writeMemory(function_address, patch_code):
             return True
     
     def patch_peb(self, peb_flag = None):
@@ -220,7 +220,7 @@ class anti_debug():
             if address != 0:
                 
                 # Generate the poly-patch to zero out EAX
-                patch_code = patch_utils().poly_eax_zero() + FUNCTION_RETURN
+                patch_code = self.patch_utils.poly_eax_zero() + FUNCTION_RETURN
                 
                 # Write the patch to the function header
                 bytes_written = self.imm.writeMemory(address, patch_code)
@@ -230,6 +230,88 @@ class anti_debug():
         
         return True
                 
+    def zw_query_information_process(self):
+        """
+        This patches ntdll.ZwQueryInformationProcess to hide that
+        there is a debugger present. This essentially patches the 
+        ProcessDebugPort in the ProcessInformationClass parameter.
+        
+        @rtype:    Boolean
+        @return:   Returns True if the patch was successful, False if it failed.
+        """
+        function_address = self.imm.getAddress("ntdll.ZwQueryInformationProcess")
+        
+        if (function_address <= 0):
+            self.imm.Log("[*] No ZwQueryInformationProcess to patch.")
+            return True
+        
+        self.imm.Log("[*] Patching ntdll.ZwQueryInformationProcess.")
+        
+        is_patched    = False
+        
+        instruction_length = self.patch_utils.find_instruction_length(function_address,2)
+                
+        # Now let's test to see if the function has been patched already
+        fake_code = self.imm.readMemory(function_address,1) + self.imm.Assemble("DD 0x12345678") + self.imm.readMemory(function_address + 5,1)
+        
+        if fake_code == self.imm.Assemble("Push 0x12345678\n Ret"):
+            
+            # It's been patched already
+            is_patched = True
+            
+            # Find the address where the patch points to 
+            address = self.imm.readLong(function_address + 1)
+            
+            # Find the length of the two instructions
+            instruction_length = self.patch_utils.find_instruction_length(address,2)
+            
+        # If the function hasn't been patched already then
+        # allocate a page for our detour code and write the 
+        # first two original instructions
+        if is_patched == False:
+            
+            # Allocate our detour page
+            stub_address = self.imm.remoteVirtualAlloc()
+            
+            # Write the instructions
+            bytes_written = self.imm.writeMemory(stub_address, self.imm.readMemory(function_address,instruction_length))
+            
+            if bytes_written < instruction_length:
+                raise mfx("[*] ZwQueryInformation Patch failed - couldn't write to memory page.")
+            
+        patch_body = " \
+            CMP DWORD [ESP+8], 7        \n    \
+            DB 0x74, 0x06               \n    \
+                                        \n    \
+            PUSH 0x%08x                 \n    \
+            RET                         \n    \
+                                        \n    \
+            MOV EAX, DWORD [ESP+0x0C]   \n    \
+            PUSH 0                      \n    \
+            POP [EAX]                   \n    \
+            XOR EAX, EAX                \n    \
+            RET 14" % (function_address + instruction_length)
+        
+        patch_body = self.imm.Assemble(patch_body)
+        
+        # Write the patch code after the first two original instructions
+        bytes_written = self.imm.writeMemory(stub_address + instruction_length, patch_body)
+        
+        if bytes_written < len(patch_body):
+            raise mfx("[*] ZwQueryInformationProcess - couldn't write primary patch code to memory.")
+        
+        # If it hasn't been patched already then write the detour
+        # jmp as a PUSH/RET combo
+        if is_patched == False:
+            
+            detour_jmp = self.imm.Assemble("PUSH 0x%08x\n RET" % stub_address)
+            
+            bytes_written = self.imm.writeMemory(function_address, detour_jmp)
+            
+            if bytes_written < len(detour_jmp):
+                raise mfx("[*] ZwQueryInformationProcess - couldn't write the detour combo at original function address.")
+        
+        return True
     
     def harness(self):
         '''
