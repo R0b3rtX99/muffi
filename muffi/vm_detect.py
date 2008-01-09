@@ -52,15 +52,15 @@ class vm_detect():
         the virtual machine is hidden. Future copies should 
         also hook all registry checks, file checks etc.
         
-        @type: os    String
-        @param os    (Optional)The operating system you wish to spoof, 
+        @type  os:    String
+        @param os:    (Optional)The operating system you wish to spoof, 
         defaults to WindowsXP. The options are::
         
             WindowsXP
             Windows2003
             Windows2000
         
-        @raise: mfx An exception is raised if the cloaking fails.
+        @raise mfx: An exception is raised if the cloaking fails.
         @rtype: Boolean
         @return: Returns True if the patches were applied correctly.
         
@@ -93,7 +93,7 @@ class vm_detect():
         any SIDT, SGDT and SLDT functions, so that we can install
         hooks into them.
         
-        @raise: mfx An exception is raised if the search fails.
+        @raise  mfx: An exception is raised if the search fails.
         @rtype: List
         @return: Returns a list of all the matches.
         """
@@ -142,7 +142,7 @@ class vm_detect():
         that are issuing descriptor table address lookups. We simply
         do a MOV [R32], 0xCONSTANT at the address of the instruction.
         
-        @raise:     mfx     An error is raised if we can't patch the instructions.
+        @raise     mfx:     An error is raised if we can't patch the instructions.
         @rtype:     Boolean
         @return:    True if the patches were applied successfully.
         """
