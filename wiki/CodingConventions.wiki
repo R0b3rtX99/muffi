@@ -18,3 +18,22 @@ When allocating a detour page, or a block of memory where we will write instruct
 
 stub_address
 
+_Resolved Function Addresses_
+
+When you are doing an imm.getAddress("kernel32.IsDebuggerPresent") type call, name your returned address:
+
+function_address
+
+_Writing to Memory_
+
+For task critical memory writes, make sure that you do a length check afterwards. Something like this:
+
+{{{
+
+bytes_written = self.imm.writeMemory(function_address,patch_code)
+
+if bytes_written < len(patch_code):
+    raise mfx("The memory write failed.")
+}}}
+
+Use bytes_written as the variable name for these checks.
