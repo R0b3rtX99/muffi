@@ -48,10 +48,10 @@ class patch_utils():
         the disasmForward* family of functions, but it aims to prevent 
         writing these while loops repeatedly in your scripts.
         
-        @type:    address    DWORD
-        @param:   address    The address of where to start the size calculation.
-        @type:    num_instructions    Integer
-        @param:   num_instructions    This is the number of instructions from the starting point you wish to include.
+        @type    address:    DWORD
+        @param   address:    The address of where to start the size calculation.
+        @type    num_instructions:    Integer
+        @param   num_instructions:    This is the number of instructions from the starting point you wish to include.
         
         @raise    mfx:        An exception is raised if this function fails.
         @rtype:   Integer
