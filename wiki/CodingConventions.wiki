@@ -6,25 +6,25 @@ This is just a whiplist of how to effectively name things when writing patches t
 
 == Conventions ==
 
-_Method Names_
+*_Method Names_
 
 Name all methods with lowercase and underscores:
 
 method_name_like_this()
 
-_Detour Addresses_
+*_Detour Addresses_
 
 When allocating a detour page, or a block of memory where we will write instructions use:
 
 stub_address
 
-_Resolved Function Addresses_
+*_Resolved Function Addresses_
 
 When you are doing an imm.getAddress("kernel32.IsDebuggerPresent") type call, name your returned address:
 
 function_address
 
-_Writing to Memory_
+*_Writing to Memory_
 
 For task critical memory writes, make sure that you do a length check afterwards. Something like this:
 
