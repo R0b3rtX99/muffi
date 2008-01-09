@@ -1,0 +1,20 @@
+#summary Coding conventions for muffi coders.
+
+= Introduction =
+
+This is just a whiplist of how to effectively name things when writing patches to the core muffi framework, or for submitting scripts, etc. It's not hard and fast, but realize that we will change your code to make sure its muffi-ized!
+
+== Conventions ==
+
+_Method Names_
+
+Name all methods with lowercase and underscores:
+
+method_name_like_this()
+
+_Detour Addresses_
+
+When allocating a detour page, or a block of memory where we will write instructions use:
+
+stub_address
+
