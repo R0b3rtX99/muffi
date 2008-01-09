@@ -1,11 +1,6 @@
 #summary Documentation of all muffi classes.
 #labels Phase-Requirements,Documentation
 
-= Introduction =
-
-This is the supporting documentation for the muffi framework. 
-
-
-= Details =
+= Muffi Documentation =
 
 [http://www.bughunter.ca/muffidocs/ Muffi Documentation] (External Link)
