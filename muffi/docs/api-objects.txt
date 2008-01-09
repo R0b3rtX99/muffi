@@ -8,12 +8,14 @@ muffi.anti_debug.anti_debug.is_debugger_present	muffi.anti_debug.anti_debug-clas
 muffi.anti_debug.anti_debug.check_remote_debugger_present	muffi.anti_debug.anti_debug-class.html#check_remote_debugger_present
 muffi.anti_debug.anti_debug.process32_first_next	muffi.anti_debug.anti_debug-class.html#process32_first_next
 muffi.anti_debug.anti_debug.get_tick_count	muffi.anti_debug.anti_debug-class.html#get_tick_count
+muffi.anti_debug.anti_debug.zw_query_information_process	muffi.anti_debug.anti_debug-class.html#zw_query_information_process
 muffi.anti_debug.anti_debug.__init__	muffi.anti_debug.anti_debug-class.html#__init__
 muffi.anti_debug.anti_debug.patch_peb	muffi.anti_debug.anti_debug-class.html#patch_peb
 muffi.muffi.muffi	muffi.muffi.muffi-class.html
 muffi.muffi.muffi.__init__	muffi.muffi.muffi-class.html#__init__
 muffi.patch_utils.patch_utils	muffi.patch_utils.patch_utils-class.html
 muffi.patch_utils.patch_utils.harness	muffi.patch_utils.patch_utils-class.html#harness
+muffi.patch_utils.patch_utils.find_instruction_length	muffi.patch_utils.patch_utils-class.html#find_instruction_length
 muffi.patch_utils.patch_utils.poly_eax_dword	muffi.patch_utils.patch_utils-class.html#poly_eax_dword
 muffi.patch_utils.patch_utils.__init__	muffi.patch_utils.patch_utils-class.html#__init__
 muffi.patch_utils.patch_utils.poly_eax_zero	muffi.patch_utils.patch_utils-class.html#poly_eax_zero
