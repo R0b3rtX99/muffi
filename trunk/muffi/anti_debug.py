@@ -166,7 +166,7 @@ class anti_debug():
             self.imm.Log( "[*] Patching PEB.BeingDebugged", address = offset )
             
             # Zero out the flag, BoB's original patch assembled a DB 0 into that position
-            self.imm.writeMemory(offset, DWORD_ZERO)
+            self.imm.writeMemory(offset, "\x00")
         
         # Patch the ProcessHeap member
         if peb_flag is None or peb_flag.lower() == "processheap":
