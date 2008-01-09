@@ -1,6 +1,4 @@
 #summary Documentation of all muffi classes.
 #labels Phase-Requirements,Documentation
 
-= Muffi Documentation =
-
 [http://www.bughunter.ca/muffidocs/ Muffi Documentation] (External Link)
