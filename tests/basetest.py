@@ -97,7 +97,17 @@ def test_cloak_vmware(imm,mf):
     test = mf.vm_detect.cloak_vmware()
     
     
-
+def test_zw_query_information_process(imm,mf):
+    
+    imm.Log("[Test] zw_query_information_process:")
+    
+    test = mf.anti_debug.zw_query_information_process()
+    
+    if test == True:
+        imm.Log("[Test] ZwQueryInformation test passed.")
+    else:
+        imm.Log("[Fail] Couldn't patch the ZwQueryInformationProcess function.")
+    
 def main(args):
     imm = Debugger()
     
@@ -118,5 +128,6 @@ def main(args):
     test_get_tick_count(imm,mf)
     test_process32_patch(imm,mf)
     test_cloak_vmware(imm,mf)
+    test_zw_query_information_process(imm,mf)
     
     return "Muffi Test Completed"
