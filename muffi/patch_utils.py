@@ -40,7 +40,45 @@ class patch_utils():
         
         self.imm            = Debugger()
     
+    
+    def find_instruction_length(self,address,num_instructions):
+        """
+        This is a helper function to assist in determining the size
+        of a set of instructions. It's really just a fancy wrapper for
+        the disasmForward* family of functions, but it aims to prevent 
+        writing these while loops repeatedly in your scripts.
         
+        @type:    address    DWORD
+        @param:   address    The address of where to start the size calculation.
+        @type:    num_instructions    Integer
+        @param:   num_instructions    This is the number of instructions from the starting point you wish to include.
+        
+        @raise    mfx:        An exception is raised if this function fails.
+        @rtype:   Integer
+        @return:  Returns the size of the instructions as an integer.
+        """
+        
+        # BoB: Get the size of the first 2 instructions
+        count            = 1
+        instruction_size = 0
+        
+        # You're being silly if you are using this function to a length
+        # calculation. Use imm.disasm(address).opsize to get a length instead
+        if num_instructions <= 1:
+            raise mfx("[*] You silly goose, use imm.disasm(address).opsize for a single instruction length.")
+
+        while count <= num_instructions:
+    
+            try:
+                instruction_size += self.imm.disasmForwardSizeOnly(address,nlines=count-1).opsize
+            
+            except TypeError:
+                raise mfx("[*] Obtaining instruction size failed. Please make sure this is a sane address.")
+        
+            count += 1
+
+        return instruction_size 
+    
     def poly_eax_dword(self, value=GENERIC_PATCH_VALUE, flavor=0):
         """
         This function will create a polymorphic set of instructions
